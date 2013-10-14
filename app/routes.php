@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+Route::get('tasks', 'TasksController@index');
+
+Route::get('tasks/{id}','TasksController@show')->where('id','\d+');
+
