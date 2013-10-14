@@ -11,11 +11,19 @@
 |
 */
 
+/*Event::listen('illuminate.query', function($query)
+{
+	//var_dump($query);
+
+});*/
+
 Route::get('/',['as' => 'home', 'uses' => 'TasksController@index']);
 
 Route::get('tasks/{id}','TasksController@show')->where('id','\d+');
 
-Route::get('{username}/tasks', function($username)
+Route::get('{username}/tasks','UserTasksController@index');
+
+/*Route::get('{username}/tasks', function($username)
 {
 	//find user by their usrename from the users table
 	$user = User::whereUsername($username)->first();
@@ -32,9 +40,9 @@ Route::get('{username}/tasks/{id}', function($username,$id)
 {
 
 	//find the Task by its id
-	$user = User::whereUsername($username)->first();
-	$task = $user->tasks()->findOrFail($id);
+	$user = User::with('tasks')->whereUsername($username)->first();
+	$task = $user->tasks;
 
 	//and load a view to display it
 	return View::make('tasks.show',compact('task'));
-});
+});*/
