@@ -2,6 +2,11 @@
 
 class TasksController extends BaseController
 {
+	public function __construct()
+	{
+
+	}
+
 	public function index()
 	{
 		//fetch all tasks
@@ -21,14 +26,15 @@ class TasksController extends BaseController
 
 	public function store()
 	{
-		$input = Input::all();
+		try
+		{
+			$this->taskCreator->make(Input::all());
 
-		Task::create([
-
-				'title' => $input['title'],
-				'body' => $input['body'],
-				'user_id' => $input['assign']
-			]);
+		}
+		catch(Acme\Services\ValidationException $e)
+		{
+			return Redirect::back()->withInput()->withError($e->getErrors());
+		}
 
 		return Redirect::home();
 	}
